@@ -28,7 +28,7 @@
       <p class="text-xs text-indigo-200 mb-6 font-semibold bg-indigo-950/70 inline-block px-3 py-1 rounded-full border border-indigo-400/30">
         تطوير وبرمجة: محمود حاتم 👑
       </p>
-      <p class="text-gray-200 mb-6 leading-relaxed">اختبر معلوماتك العامة في تحدي جديد!<br>الأسئلة تتغير بشكل عشوائي في كل مرة تلعب فيها.</p>
+      <p class="text-gray-200 mb-6 leading-relaxed">اختبر معلوماتك العامة في تحدي متجدد!<br>كل مرة تبدأ فيها اللعبة، تظهر أسئلة جديدة كلياً.</p>
       <button id="start-btn" type="button" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg transform hover:-translate-y-1 cursor-pointer">
         ابدأ التحدي الآن 🚀
       </button>
@@ -80,14 +80,14 @@
   </footer>
 
   <script>
-    // السؤال الأول الثابت دائمًا
+    // السؤال الأول الثابت دائمًا في البداية
     const fixedQuestion = { 
       q: "مين هو أجدع واحد عرفته في الجيش؟", 
       options: ["محمود حاتم", "أحمد أحمدي", "بسام عيد", "مصطفى صفوت"], 
       answer: 0 
     };
 
-    // بنك باقي الأسئلة العامة
+    // بنك الأسئلة المتنوع الكبير
     const questionPool = [
       { q: "لو واحد طلب منك 100 جنيه؟", options: ["هتدي له", "مش هتدي له", "هتسأل صاحبك", "ما معيش فلوس والله"], answer: 3 },
       { q: "ما هي عاصمة مصر؟", options: ["القاهرة", "الإسكندرية", "الجيزة", "أسوان"], answer: 0 },
@@ -100,7 +100,10 @@
       { q: "ما هي العملة الرسمية للمملكة العربية السعودية؟", options: ["الدرهم", "الجنيه", "الريال", "الدينار"], answer: 2 },
       { q: "في أي قارة تقع دولة اليابان؟", options: ["أوروبا", "إفريقيا", "آسيا", "أمريكا الشمالية"], answer: 2 },
       { q: "ما هو العنصر الأساسي للتنفس؟", options: ["النيتروجين", "الأوكسجين", "الهيدروجين", "كربون"], answer: 1 },
-      { q: "كم عدد أسنان الشخص البالغ؟", options: ["28", "30", "32", "36"], answer: 2 }
+      { q: "كم عدد أسنان الشخص البالغ؟", options: ["28", "30", "32", "36"], answer: 2 },
+      { q: "ما هي عاصمة فرنسا؟", options: ["لندن", "باريس", "برلين", "روما"], answer: 1 },
+      { q: "في اي سنة قام صلح الحديبية؟", options: ["السنة 5 هجرية", "السنة 6 هجرية", "السنة 7 هجرية", "السنة 8 هجرية"], answer: 1 },
+      { q: "ما هو أكبر كوكب في المجموعة الشمسية؟", options: ["زحل", "المريخ", "المشتري", "عطارد"], answer: 2 }
     ];
 
     let currentQuestions = [];
@@ -117,10 +120,15 @@
     });
 
     function startGame() {
-      // إعداد الأسئلة: تثبيت السؤال الأول + اختيار أسئلة عشوائية من البنك
-      const shuffledPool = [...questionPool].sort(() => 0.5 - Math.random());
-      // بناخد السؤال الثابت أولاً + 9 أسئلة عشوائية ليصبح المجموع 10 أسئلة
-      currentQuestions = [fixedQuestion, ...shuffledPool.slice(0, 9)];
+      // خوارزمية خلط عشوائي حقيقية (Fisher-Yates Shuffle) لضمان عدم التكرار
+      let shuffled = [...questionPool];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+
+      // السؤال الأول ثابت دائماً، وباقي الـ 5 أسئلة تأتي عشوائية تماماً
+      currentQuestions = [fixedQuestion, ...shuffled.slice(0, 5)];
 
       currentQuestionIndex = 0;
       score = 0;
