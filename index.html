@@ -49,12 +49,12 @@
 
       <!-- Question Text -->
       <h2 id="question-text" class="text-xl font-bold mb-6 text-right leading-snug text-amber-100 min-h-[60px] flex items-center">
-        جاري تحميل الأسئلة...
+        <!-- Question content -->
       </h2>
 
       <!-- Options -->
       <div id="options-container" class="space-y-3">
-        <!-- الخيارات ستظهر هنا -->
+        <!-- Options content -->
       </div>
     </div>
 
@@ -82,25 +82,39 @@
   </footer>
 
   <script>
-    let questions = [];
+    const questions = [
+      { 
+        q: "مين هو أجدع واحد عرفته في الجيش؟", 
+        options: ["محمود حاتم", "أحمد أحمدي", "بسام عيد", "مصطفى صفوت"], 
+        answer: 0 
+      },
+      { 
+        q: "لو واحد طلب منك 100 جنيه؟", 
+        options: ["هتدي له", "مش هتدي له", "هتسأل صاحبك", "ما معيش فلوس والله"], 
+        answer: 3 
+      },
+      { 
+        q: "ما هي عاصمة مصر؟", 
+        options: ["القاهرة", "الإسكندرية", "الجيزة", "أسوان"], 
+        answer: 0 
+      },
+      { 
+        q: "كم عدد قارات العالم؟", 
+        options: ["5", "6", "7", "8"], 
+        answer: 2 
+      },
+      { 
+        q: "ما هو أطول نهر في العالم؟", 
+        options: ["الأمازون", "النيل", "الفرات", "الميسيسيبي"], 
+        answer: 1 
+      }
+    ];
+
     let currentQuestionIndex = 0;
     let score = 0;
     let canAnswer = true;
 
-    async function loadQuestions() {
-      try {
-        const response = await fetch('questions.json');
-        questions = await response.json();
-      } catch (error) {
-        console.error('حدث خطأ في تحميل الأسئلة:', error);
-      }
-    }
-
-    async function startGame() {
-      if (questions.length === 0) {
-        await loadQuestions();
-      }
-
+    function startGame() {
       currentQuestionIndex = 0;
       score = 0;
       canAnswer = true;
@@ -186,11 +200,4 @@
         resText.innerText = "أداء جيد، يمكنك المحاولة مجدداً.";
       } else {
         resIcon.innerText = "💡";
-        resText.innerText = "حاول مرة أخرى لتنشيط معلوماتك!";
-      }
-    }
-
-    loadQuestions();
-  </script>
-</body>
-</html>
+        resText.innerText = "ح
