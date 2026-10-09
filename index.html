@@ -29,7 +29,7 @@
         تطوير وبرمجة: محمود حاتم 👑
       </p>
       <p class="text-gray-200 mb-6 leading-relaxed">اختبر معلوماتك العامة!<br>بمجرد اختيار الإجابة سيتم تقييمها والتنقل تلقائياً للسؤال التالي.</p>
-      <button onclick="startGame()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg transform hover:-translate-y-1">
+      <button id="start-btn" type="button" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg transform hover:-translate-y-1 cursor-pointer">
         ابدأ التحدي الآن 🚀
       </button>
     </div>
@@ -49,12 +49,10 @@
 
       <!-- Question Text -->
       <h2 id="question-text" class="text-xl font-bold mb-6 text-right leading-snug text-amber-100 min-h-[60px] flex items-center">
-        <!-- Question content -->
       </h2>
 
       <!-- Options -->
       <div id="options-container" class="space-y-3">
-        <!-- Options content -->
       </div>
     </div>
 
@@ -69,7 +67,7 @@
         <span id="final-score" class="text-4xl font-extrabold text-amber-400">0</span>
       </div>
 
-      <button onclick="startGame()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg">
+      <button id="restart-btn" type="button" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg cursor-pointer">
         إعادة التحدي 🔄
       </button>
     </div>
@@ -114,6 +112,14 @@
     let score = 0;
     let canAnswer = true;
 
+    document.addEventListener('DOMContentLoaded', function() {
+      const startBtn = document.getElementById('start-btn');
+      const restartBtn = document.getElementById('restart-btn');
+
+      if (startBtn) startBtn.addEventListener('click', startGame);
+      if (restartBtn) restartBtn.addEventListener('click', startGame);
+    });
+
     function startGame() {
       currentQuestionIndex = 0;
       score = 0;
@@ -140,9 +146,12 @@
 
       q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-right p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all duration-200 flex justify-between items-center font-medium";
+        btn.type = "button";
+        btn.className = "w-full text-right p-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 transition-all duration-200 flex justify-between items-center font-medium cursor-pointer";
         btn.innerText = opt;
-        btn.onclick = () => checkAnswer(idx, btn);
+        btn.addEventListener('click', function() {
+          checkAnswer(idx, btn);
+        });
         optionsContainer.appendChild(btn);
       });
     }
@@ -162,8 +171,10 @@
         selectedBtn.classList.remove('bg-white/10', 'hover:bg-white/20');
         selectedBtn.classList.add('bg-rose-600', 'border-rose-400', 'text-white');
 
-        buttons[q.answer].classList.remove('bg-white/10');
-        buttons[q.answer].classList.add('bg-emerald-600/80', 'border-emerald-400');
+        if (buttons[q.answer]) {
+          buttons[q.answer].classList.remove('bg-white/10');
+          buttons[q.answer].classList.add('bg-emerald-600/80', 'border-emerald-400');
+        }
       }
 
       document.getElementById('score-count').innerText = `النقاط: ${score}`;
@@ -200,4 +211,9 @@
         resText.innerText = "أداء جيد، يمكنك المحاولة مجدداً.";
       } else {
         resIcon.innerText = "💡";
-        resText.innerText = "ح
+        resText.innerText = "حاول مرة أخرى لتنشيط معلوماتك!";
+      }
+    }
+  </script>
+</body>
+</html>
