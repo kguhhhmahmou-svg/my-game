@@ -9,21 +9,26 @@
   <style>
     body {
       font-family: 'Tajawal', sans-serif;
+      background-image: url('bg.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-indigo-900 via-purple-800 to-slate-900 min-h-screen text-white flex flex-col items-center justify-center p-4">
+<body class="min-h-screen text-white flex flex-col items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
 
-  <div class="w-full max-w-xl bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl relative overflow-hidden my-auto">
+  <div class="w-full max-w-xl bg-slate-900/80 backdrop-blur-md border border-white/20 rounded-2xl p-6 shadow-2xl relative overflow-hidden my-auto">
     
     <!-- Start Screen -->
     <div id="start-screen" class="text-center py-8">
       <div class="text-6xl mb-4">🧠</div>
       <h1 class="text-3xl font-extrabold mb-2 text-amber-300">تحدي المعلومات العامة</h1>
-      <p class="text-xs text-indigo-200 mb-6 font-semibold bg-indigo-950/50 inline-block px-3 py-1 rounded-full border border-indigo-400/30">
+      <p class="text-xs text-indigo-200 mb-6 font-semibold bg-indigo-950/70 inline-block px-3 py-1 rounded-full border border-indigo-400/30">
         تطوير وبرمجة: محمود حاتم 👑
       </p>
-      <p class="text-gray-200 mb-6 leading-relaxed">اختبر معلوماتك في 10 أسئلة ممتعة متنوعة!<br>بمجرد اختيار الإجابة سيتم تقييمها والتنقل تلقائياً للسؤال التالي.</p>
+      <p class="text-gray-200 mb-6 leading-relaxed">اختبر معلوماتك العامة!<br>بمجرد اختيار الإجابة سيتم تقييمها والتنقل تلقائياً للسؤال التالي.</p>
       <button onclick="startGame()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg transform hover:-translate-y-1">
         ابدأ التحدي الآن 🚀
       </button>
@@ -33,18 +38,18 @@
     <div id="quiz-screen" class="hidden">
       <!-- Header Info -->
       <div class="flex justify-between items-center mb-4 text-sm font-semibold">
-        <span id="question-count" class="bg-indigo-950/60 px-3 py-1 rounded-full text-indigo-200">السؤال 1 من 10</span>
-        <span id="score-count" class="bg-emerald-950/60 px-3 py-1 rounded-full text-emerald-300">النقاط: 0</span>
+        <span id="question-count" class="bg-indigo-950/80 px-3 py-1 rounded-full text-indigo-200">السؤال 1</span>
+        <span id="score-count" class="bg-emerald-950/80 px-3 py-1 rounded-full text-emerald-300">النقاط: 0</span>
       </div>
 
       <!-- Progress Bar -->
       <div class="w-full bg-white/10 rounded-full h-2.5 mb-6 overflow-hidden">
-        <div id="progress-bar" class="bg-amber-400 h-2.5 rounded-full transition-all duration-300" style="width: 10%"></div>
+        <div id="progress-bar" class="bg-amber-400 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
       </div>
 
       <!-- Question Text -->
       <h2 id="question-text" class="text-xl font-bold mb-6 text-right leading-snug text-amber-100 min-h-[60px] flex items-center">
-        <!-- السؤال سيظهر هنا -->
+        جاري تحميل الأسئلة...
       </h2>
 
       <!-- Options -->
@@ -61,7 +66,7 @@
       
       <div class="bg-white/5 border border-white/10 rounded-xl p-4 mb-6">
         <span class="block text-sm text-gray-300">النتيجة النهائية</span>
-        <span id="final-score" class="text-4xl font-extrabold text-amber-400">0 / 10</span>
+        <span id="final-score" class="text-4xl font-extrabold text-amber-400">0</span>
       </div>
 
       <button onclick="startGame()" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-8 py-3 rounded-xl transition duration-200 shadow-lg">
@@ -71,30 +76,31 @@
 
   </div>
 
-  <!-- Footer / Ownership Claim -->
+  <!-- Footer -->
   <footer class="mt-6 text-center text-xs text-indigo-200/80 tracking-wide">
     جميع الحقوق محفوظة © | تم تطوير اللعبة بواسطة: <span class="font-bold text-amber-300">محمود حاتم</span>
   </footer>
 
   <script>
-    const questions = [
-      { question: "ما هي عاصمة جمهورية مصر العربية؟", options: ["الإسكندرية", "القاهرة", "الجيزة", "الأقصر"], answer: 1 },
-      { question: "كم عدد ألوان قوس قزح؟", options: ["5 ألوان", "6 ألوان", "7 ألوان", "8 ألوان"], answer: 2 },
-      { question: "ما هو أكبر كوكب في المجموعة الشمسية؟", options: ["المريخ", "الأرض", "المشتري", "زحل"], answer: 2 },
-      { question: "ما هو الحيوان الذي يُلقب بـ 'ملك الغابة'؟", options: ["النمور", "الأسد", "الفهد", "الذئب"], answer: 1 },
-      { question: "كم عدد أضلاع المثلث؟", options: ["3 أضلاع", "4 أضلاع", "5 أضلاع", "6 أضلاع"], answer: 0 },
-      { question: "ما هي المادة التي يتكون منها هيكل اللؤلؤ الطبيعي؟", options: ["الصدف والخلايا البحرية", "كربونات الكالسيوم", "الكوارتز", "الزجاج البحري"], answer: 1 },
-      { question: "ما هي أطول قارة في العالم من حيث المساحة؟", options: ["أفريقيا", "أوروبا", "آسيا", "أمريكا الشمالية"], answer: 2 },
-      { question: "ما هو أسرع كائن حي بري على وجه الأرض؟", options: ["الغزال", "الفهد", "الأسد", "الحصان"], answer: 1 },
-      { question: "ما اسم العملية التي يستغل بها النبات ضوء الشمس لصنع غذائه؟", options: ["التنفس", "البناء الضوئي", "التبخر", "التكثف"], answer: 1 },
-      { question: "كم عدد الساعات في اليوم الواحد؟", options: ["12 ساعة", "24 ساعة", "48 ساعة", "36 ساعة"], answer: 1 }
-    ];
-
+    let questions = [];
     let currentQuestionIndex = 0;
     let score = 0;
     let canAnswer = true;
 
-    function startGame() {
+    async function loadQuestions() {
+      try {
+        const response = await fetch('questions.json');
+        questions = await response.json();
+      } catch (error) {
+        console.error('حدث خطأ في تحميل الأسئلة:', error);
+      }
+    }
+
+    async function startGame() {
+      if (questions.length === 0) {
+        await loadQuestions();
+      }
+
       currentQuestionIndex = 0;
       score = 0;
       canAnswer = true;
@@ -113,7 +119,7 @@
       document.getElementById('question-count').innerText = `السؤال ${currentQuestionIndex + 1} من ${questions.length}`;
       document.getElementById('score-count').innerText = `النقاط: ${score}`;
       document.getElementById('progress-bar').style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
-      document.getElementById('question-text').innerText = q.question;
+      document.getElementById('question-text').innerText = q.q;
 
       const optionsContainer = document.getElementById('options-container');
       optionsContainer.innerHTML = '';
@@ -167,20 +173,24 @@
       const resText = document.getElementById('result-text');
       const resIcon = document.getElementById('result-icon');
 
-      if (score === 10) {
+      const percentage = (score / questions.length) * 100;
+
+      if (percentage === 100) {
         resIcon.innerText = "🏆";
-        resText.innerText = "ممتاز جداً! إجابات مثالية في كل الأسئلة!";
-      } else if (score >= 7) {
+        resText.innerText = "ممتاز جداً! إجابات مثالية!";
+      } else if (percentage >= 70) {
         resIcon.innerText = "🌟";
-        resText.innerText = "أداء رائع جداً! لديك ثقافة عامة ممتازة.";
-      } else if (score >= 5) {
+        resText.innerText = "أداء رائع جداً!";
+      } else if (percentage >= 50) {
         resIcon.innerText = "👍";
-        resText.innerText = "أداء جيد، يمكنك المحاولة مجدداً لتحقيق درجة أفضل.";
+        resText.innerText = "أداء جيد، يمكنك المحاولة مجدداً.";
       } else {
         resIcon.innerText = "💡";
-        resText.innerText = "حاول مرة أخرى لتنشيط معلوماتك وتحدي نفسك!";
+        resText.innerText = "حاول مرة أخرى لتنشيط معلوماتك!";
       }
     }
+
+    loadQuestions();
   </script>
 </body>
 </html>
